@@ -19,3 +19,11 @@ for i in range(numberOfEdges):
 csp = CSP(graph)
 cspSolver = CSPBacktracking(csp)
 cspSolver.run()
+
+# 4
+# 4
+# P S P T
+# 0 1
+# 1 2
+# 1 3
+# 2 3

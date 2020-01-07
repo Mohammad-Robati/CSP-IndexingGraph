@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class CSP:
 
     def __init__(self, graph):
@@ -41,4 +43,46 @@ class CSP:
         elif side == 'right':
             string = str(acc)
             return int(string[len(string)-1])
+
+    def applySquareConstraints(self, node):
+        value = node['value']
+        if value in [1, 3, 5, 7, 9]:
+            for neighbour in node['neighbours']:
+                for d in self.graph[neighbour]['domain']:
+                    if d == 2 or d == 4 or d == 6 or d == 8:
+                        self.graph[neighbour]['domain'].remove(d)
+        value = node['value']
+        if len(node['neighbours']) == 1:
+            neighbour = node['neighbours'][0]
+            domain = deepcopy(self.graph[neighbour]['domain'])
+            for d in domain:
+                if d != value:
+                    self.graph[neighbour]['domain'].remove(d)
+
+    def applyPentagonConstraints(self, node):
+        value = node['value']
+        if len(node['neighbours']) == 1:
+            neighbour = node['neighbours'][0]
+            domain = deepcopy(self.graph[neighbour]['domain'])
+            for d in domain:
+                if d != value:
+                    self.graph[neighbour]['domain'].remove(d)
+
+    def applyTriangleConstraints(self, node):
+        value = node['value']
+        if len(node['neighbours']) == 1:
+            neighbour = node['neighbours'][0]
+            domain = deepcopy(self.graph[neighbour]['domain'])
+            for d in domain:
+                if d != value:
+                    self.graph[neighbour]['domain'].remove(d)
+
+    def applyHexagonConstraints(self, node):
+        value = node['value']
+        if len(node['neighbours']) == 1:
+            neighbour = node['neighbours'][0]
+            domain = deepcopy(self.graph[neighbour]['domain'])
+            for d in domain:
+                if d != value:
+                    self.graph[neighbour]['domain'].remove(d)
 
