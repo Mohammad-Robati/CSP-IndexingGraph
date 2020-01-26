@@ -58,10 +58,23 @@ class CSPBacktracking:
             self.csp.applyTriangleConstraints(node)
         elif node['shape'] == 'H':
             self.csp.applyHexagonConstraints(node)
+        elif node['shape'] == 'C':
+            self.csp.applyCircleConstraints(node)
         for node in graph:
             if not node['domain']:
                 return False
         return True
+
+    def resetDomains(self, node, all):
+        graph = self.csp.graph
+        if all:
+            for node in graph:
+                node['domain'] = [i+1 for i in range(9)]
+            return
+        for neighbour in node['neighbours']:
+            if len(graph[neighbour]['domainHistory']) > 1:
+                graph[neighbour]['domainHistory'].pop()
+            graph[neighbour]['domain'] = deepcopy(graph[neighbour]['domainHistory'][len(graph[neighbour]['domainHistory'])-1])
 
     def backtrack(self):
         if self.isComplete():
@@ -70,12 +83,15 @@ class CSPBacktracking:
         for d in node['domain']:
             node['value'] = d
             if self.checkNeighbours(node):
-                isSuccess = True #self.forwardChecking(node)
+                isSuccess = self.forwardChecking(node)
+                print(node)
                 if isSuccess:
                     result = self.backtrack()
                     if result != False:
                         return True
+                    self.resetDomains(node, False)
         node['value'] = -1
+        self.resetDomains(node, False)
         return False
 
     def run(self):

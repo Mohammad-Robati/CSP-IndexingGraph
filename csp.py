@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+
 class CSP:
 
     def __init__(self, graph):
@@ -44,45 +45,48 @@ class CSP:
             string = str(acc)
             return int(string[len(string)-1])
 
+    def applyUnitConstraint(self, node):
+        value = node['value']
+        if len(node['neighbours']) == 1:
+            neighbour = node['neighbours'][0]
+            domain = deepcopy(self.graph[neighbour]['domain'])
+            revised = False
+            for d in domain:
+                if d != value:
+                    self.graph[neighbour]['domain'].remove(d)
+                    revised = True
+                if revised:
+                    if domain != [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+                        self.graph[neighbour]['domainHistory'].append(domain)
+
     def applySquareConstraints(self, node):
         value = node['value']
         if value in [1, 3, 5, 7, 9]:
             for neighbour in node['neighbours']:
+                domain = deepcopy(self.graph[neighbour]['domain'])
+                revised = False
                 for d in self.graph[neighbour]['domain']:
                     if d == 2 or d == 4 or d == 6 or d == 8:
                         self.graph[neighbour]['domain'].remove(d)
-        value = node['value']
-        if len(node['neighbours']) == 1:
-            neighbour = node['neighbours'][0]
-            domain = deepcopy(self.graph[neighbour]['domain'])
-            for d in domain:
-                if d != value:
-                    self.graph[neighbour]['domain'].remove(d)
+                        revised = True
+                    if revised:
+                        if domain != [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+                            self.graph[neighbour]['domainHistory'].append(domain)
+        self.applyUnitConstraint(node)
 
     def applyPentagonConstraints(self, node):
-        value = node['value']
-        if len(node['neighbours']) == 1:
-            neighbour = node['neighbours'][0]
-            domain = deepcopy(self.graph[neighbour]['domain'])
-            for d in domain:
-                if d != value:
-                    self.graph[neighbour]['domain'].remove(d)
+        # Can think of any pentagon constraint?
+        self.applyUnitConstraint(node)
 
     def applyTriangleConstraints(self, node):
-        value = node['value']
-        if len(node['neighbours']) == 1:
-            neighbour = node['neighbours'][0]
-            domain = deepcopy(self.graph[neighbour]['domain'])
-            for d in domain:
-                if d != value:
-                    self.graph[neighbour]['domain'].remove(d)
+        # Can think of any triangle constraint?
+        self.applyUnitConstraint(node)
 
     def applyHexagonConstraints(self, node):
-        value = node['value']
-        if len(node['neighbours']) == 1:
-            neighbour = node['neighbours'][0]
-            domain = deepcopy(self.graph[neighbour]['domain'])
-            for d in domain:
-                if d != value:
-                    self.graph[neighbour]['domain'].remove(d)
+        # Can think of any hexagon constraint?
+        self.applyUnitConstraint(node)
+
+    def applyCircleConstraints(self, node):
+        # Can think of any hexagon constraint?
+        self.applyUnitConstraint(node)
 
